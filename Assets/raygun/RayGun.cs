@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RayGun : MonoBehaviour
 {
@@ -13,10 +14,11 @@ public class RayGun : MonoBehaviour
     public AudioClip shootingAudioClip;
     public GameObject rayImpactPrefab;
     public LayerMask layerMask;
-    private int totalMonsters = 5;
     public GameObject key;
     public Player playerScript;
     public CodePanel codePanel;
+    private int totalMonstersRemaining = 5;
+    public MonsterSpawner monsterSpawner;
 
     // Start is called before the first frame update
     void Start()
@@ -43,24 +45,26 @@ public class RayGun : MonoBehaviour
         Vector3 endpoint = Vector3.zero;
 
         if (hasHit) {
+            Debug.Log("Hit Button");
             endpoint = hit.point;
-            UnderwaterCreature monster = hit.transform.GetComponentInParent<UnderwaterCreature>();
+            // UnderwaterCreature monster = hit.transform.GetComponentInParent<UnderwaterCreature>();
             CodePanel panel = hit.transform.GetComponentInParent<CodePanel>();
             
-            if (monster) {
+            if (hit.collider.tag == "Monster") {
                 hit.collider.enabled = false;
+                UnderwaterCreature monster = hit.collider.GetComponent<UnderwaterCreature>();
                 monster.Kill();
-                totalMonsters -= 1;
-                if (totalMonsters == 0) {
-                    Vector3 keyPos = Vector3.zero;
-                    keyPos.z = 3;
-                    Instantiate(key, keyPos, transform.rotation);
-
-                    playerScript.AddToBackpack("monsterKey");
+                totalMonstersRemaining -= 1;
+                if (totalMonstersRemaining == 0) {
+                    Debug.Log("Deploying monster key");
+                    monsterSpawner.KillMonsters();
                 }
             } else if (panel){
                 codePanel.HandleSquareHit(hit.transform.gameObject);
-            } 
+            } else if(hit.collider.tag == "UpButton" || hit.collider.tag == "DownButton"){
+                    Button thisButton = hit.collider.GetComponent<Button>();
+                    thisButton.onClick.Invoke();
+                }
             else {
                 GameObject rayImpact = Instantiate(rayImpactPrefab, hit.point, Quaternion.LookRotation(-hit.normal));
                 Destroy(rayImpact, 1);
