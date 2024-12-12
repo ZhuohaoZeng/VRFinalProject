@@ -25,6 +25,5 @@ public class Player : MonoBehaviour
         key.GetComponent<MeshRenderer>().enabled = true;
         AddToBackpack(keyName);
         yield return new WaitForSeconds(1);
-        // DestroyImmediate(keyPrefab, true);
     }
 }

@@ -8,25 +8,19 @@ public class RayGun : MonoBehaviour
     public OVRInput.RawButton shootingButton;
     public LineRenderer linePrefab;
     public Transform shootingPoint;
-    public float maxLineDistance = 5;
+    public float maxLineDistance = 10;
     public float lineShowTimer = 0.3f;
     public AudioSource source;
     public AudioClip shootingAudioClip;
     public GameObject rayImpactPrefab;
     public LayerMask layerMask;
-    public GameObject key;
-    public Player playerScript;
+    // public GameObject key;
+    // public Player playerScript;
     public CodePanel codePanel;
-    private int totalMonstersRemaining = 5;
-    public MonsterSpawner monsterSpawner;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-
-
-    }
+    public int totalMonstersRemainingFloor1 = 5;
+    public int totalMonstersRemainingFloor2 = 10;
+    // public MonsterSpawner monsterSpawner;
+    // public MonsterSpawnerTutorial monsterSpawnerTutorial;
 
     // Update is called once per frame
     void Update()
@@ -35,7 +29,6 @@ public class RayGun : MonoBehaviour
             Shoot();
         }
     }
-
     public void Shoot() {
         source.PlayOneShot(shootingAudioClip);
 
@@ -45,7 +38,6 @@ public class RayGun : MonoBehaviour
         Vector3 endpoint = Vector3.zero;
 
         if (hasHit) {
-            Debug.Log("Hit Button");
             endpoint = hit.point;
             // UnderwaterCreature monster = hit.transform.GetComponentInParent<UnderwaterCreature>();
             CodePanel panel = hit.transform.GetComponentInParent<CodePanel>();
@@ -53,11 +45,19 @@ public class RayGun : MonoBehaviour
             if (hit.collider.tag == "Monster") {
                 hit.collider.enabled = false;
                 UnderwaterCreature monster = hit.collider.GetComponent<UnderwaterCreature>();
-                monster.Kill();
-                totalMonstersRemaining -= 1;
-                if (totalMonstersRemaining == 0) {
-                    Debug.Log("Deploying monster key");
-                    monsterSpawner.KillMonsters();
+                monster.Damage();
+
+                // remove monsters from monster count if they have been destroyed
+                // We can use this value to check success condition of the room
+                if (monster == null) {
+                    if (totalMonstersRemainingFloor1 > 0) {
+                        totalMonstersRemainingFloor1 --;
+                        if (totalMonstersRemainingFloor1 == 0) {
+                            Debug.Log("Monsters killed successfully");
+                        }
+                    } else {
+                        totalMonstersRemainingFloor2 --;
+                    }
                 }
             } else if (panel){
                 codePanel.HandleSquareHit(hit.transform.gameObject);
