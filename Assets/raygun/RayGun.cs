@@ -8,25 +8,24 @@ public class RayGun : MonoBehaviour
     public OVRInput.RawButton shootingButton;
     public LineRenderer linePrefab;
     public Transform shootingPoint;
-    public float maxLineDistance = 5;
+    public float maxLineDistance = 10;
     public float lineShowTimer = 0.3f;
     public AudioSource source;
     public AudioClip shootingAudioClip;
     public GameObject rayImpactPrefab;
     public LayerMask layerMask;
-    public GameObject key;
-    public Player playerScript;
+    // public GameObject key;
+    // public Player playerScript;
     public CodePanel codePanel;
-    private int totalMonstersRemaining = 5;
-    public MonsterSpawner monsterSpawner;
+    public int totalMonstersRemainingFloor1 = 5;
+    public int totalMonstersRemainingFloor2 = 10;
+    private bool codePanelFloor1Satisfied = false;
+    private bool codePanelFloor2Satisfied = false;
+    private bool finalBossIsDead = false;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-
-
-    }
+    private bool onFloor1 = true;
+    // public MonsterSpawner monsterSpawner;
+    // public MonsterSpawnerTutorial monsterSpawnerTutorial;
 
     // Update is called once per frame
     void Update()
@@ -34,8 +33,8 @@ public class RayGun : MonoBehaviour
         if (OVRInput.GetDown(shootingButton)) {
             Shoot();
         }
-    }
 
+    }
     public void Shoot() {
         source.PlayOneShot(shootingAudioClip);
 
@@ -45,7 +44,6 @@ public class RayGun : MonoBehaviour
         Vector3 endpoint = Vector3.zero;
 
         if (hasHit) {
-            Debug.Log("Hit Button");
             endpoint = hit.point;
             // UnderwaterCreature monster = hit.transform.GetComponentInParent<UnderwaterCreature>();
             CodePanel panel = hit.transform.GetComponentInParent<CodePanel>();
@@ -53,14 +51,31 @@ public class RayGun : MonoBehaviour
             if (hit.collider.tag == "Monster") {
                 hit.collider.enabled = false;
                 UnderwaterCreature monster = hit.collider.GetComponent<UnderwaterCreature>();
-                monster.Kill();
-                totalMonstersRemaining -= 1;
-                if (totalMonstersRemaining == 0) {
-                    Debug.Log("Deploying monster key");
-                    monsterSpawner.KillMonsters();
+                monster.Damage();
+
+                // remove monsters from monster count if they have been destroyed
+                // We can use this value to check success condition of the room
+                if (monster == null) {
+                    if (totalMonstersRemainingFloor1 > 0) {
+                        totalMonstersRemainingFloor1 --;
+                        if (totalMonstersRemainingFloor1 == 0) {
+                            Debug.Log("Monsters killed successfully");
+                        }
+                    } else if (totalMonstersRemainingFloor2 == 0) {
+                        finalBossIsDead = true;
+                    } else {
+                        totalMonstersRemainingFloor2 --;
+                    }
                 }
             } else if (panel){
-                codePanel.HandleSquareHit(hit.transform.gameObject);
+                bool result = codePanel.HandleSquareHit(hit.transform.gameObject);
+                if (onFloor1) {
+                    codePanelFloor1Satisfied = result;
+                } else {
+                    codePanelFloor2Satisfied = result;
+
+                }
+                
             } else if(hit.collider.tag == "UpButton" || hit.collider.tag == "DownButton"){
                     Button thisButton = hit.collider.GetComponent<Button>();
                     thisButton.onClick.Invoke();
@@ -68,6 +83,13 @@ public class RayGun : MonoBehaviour
             else {
                 GameObject rayImpact = Instantiate(rayImpactPrefab, hit.point, Quaternion.LookRotation(-hit.normal));
                 Destroy(rayImpact, 1);
+            }
+
+            if (onFloor1 && codePanelFloor1Satisfied && totalMonstersRemainingFloor1 == 0) {
+                // teleport to floor 2
+            }
+            if (!onFloor1 && codePanelFloor1Satisfied && totalMonstersRemainingFloor2 == 0) {
+                // teleport to floor 3
             }
 
         } else {

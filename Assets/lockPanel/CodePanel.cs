@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CodePanel : MonoBehaviour
@@ -9,9 +11,9 @@ public class CodePanel : MonoBehaviour
     public GameObject redSquare; 
     public GameObject keyPrefab; 
     private int[] currentCode = new int[4];
-    private int[] correctCode = {1, 9, 5, 7};
-    public Player playerScript;
-    public GameObject door;
+    private int[] incorrectCode = {0,0,0,0};
+    private int[] correctCode = {0,0,0,0};
+    public bool floor1 = true;
 
     void Start()
     {
@@ -21,16 +23,18 @@ public class CodePanel : MonoBehaviour
         }
     }
 
-    public void HandleSquareHit(GameObject square)
+    public bool HandleSquareHit(GameObject square)
     {
         if (IsCodeSquare(square, out int index))
         {
             IncrementSquare(index);
+            return false;
         }
         else if (square == redSquare)
         {
-            CheckCode();
+            return CheckCode();
         }
+        return false;
     }
 
     private bool IsCodeSquare(GameObject obj, out int index)
@@ -49,18 +53,22 @@ public class CodePanel : MonoBehaviour
         }
     }
 
-    private void CheckCode()
+    private bool CheckCode()
     {
         for (int i = 0; i < currentCode.Length; i++)
         {
-            if (currentCode[i] != correctCode[i])
+            if (floor1 && currentCode[i] != incorrectCode[i])
             {
-                Debug.Log("Incorrect Code");
-                return;
-            } else {
-                Destroy(door);
-                StartCoroutine(playerScript.generateKey("panelKey"));
+                return true;
+            }
+            if (!floor1 && currentCode[i] != correctCode[i]) {
+                // DamageAddition(1);
+                return false;
             }
         }
+        if (!floor1) {
+            return true;
+        }
+        return false;
     }
 }

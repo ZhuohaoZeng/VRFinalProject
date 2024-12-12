@@ -5,25 +5,16 @@ using UnityEngine.ProBuilder.Shapes;
 
 public class MonsterSpawner : MonoBehaviour
 {
-    public GameObject monster;
-    private int totalMonstersRemaining = 5;
-    public Player playerScript;
-    public float spawnRadius = 4.0f;
-    public GameObject door;
+    public UnderwaterCreature monster;
+    public int totalMonstersRemaining = 10;
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
+    public void SpawnMonsters() {
+        Debug.Log("Floor2 monsters spawning");
         for (int i = 0; i < totalMonstersRemaining; i++) {
-            Vector3 pos = Random.insideUnitSphere * spawnRadius;
+            Vector3 pos = new Vector3(Random.value * 10.0f, 0.0f, Random.value*25.0f);
             pos = transform.TransformPoint(pos);
-            Instantiate(monster, pos, Quaternion.identity, transform);
+            UnderwaterCreature newMonster = Instantiate(monster, pos, Quaternion.identity, transform);
+            newMonster.willAttack = true;
         }
-    }
-
-    public void KillMonsters() {
-        Destroy(door);
-        StartCoroutine(playerScript.generateKey("monsterKey"));
     }
 }
