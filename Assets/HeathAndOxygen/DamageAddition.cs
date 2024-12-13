@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class DamageAddition : MonoBehaviour
@@ -26,7 +27,9 @@ public class DamageAddition : MonoBehaviour
     {
        healthBar.value = currentHP;
        Debug.Log("Current HP: " + currentHP.ToString());
-        //TODO add something for player death. Will work on that after a small break
+       if(currentHP <=0){
+        SceneManager.LoadScene("DeathScene");
+       }
     }
 
     public void dealDamage(float damageAmount){

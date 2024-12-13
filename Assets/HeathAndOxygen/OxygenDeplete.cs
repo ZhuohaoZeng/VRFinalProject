@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class OxygenDeplete : MonoBehaviour
 {
@@ -20,8 +21,9 @@ public class OxygenDeplete : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(oxygenLevel == 0){
+        if(oxygenLevel <= 0){
             Debug.Log("No Oxygen");
+            SceneManager.LoadScene("DeathScene");
         }
         if (Time.time >= nextTime) {
             oxygenLevel = oxygenLevel-depletionPerSecond;
