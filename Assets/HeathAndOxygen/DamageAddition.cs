@@ -17,7 +17,7 @@ public class DamageAddition : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        currentHP = startingHP;
     }
 
     // Update is called once per frame
@@ -27,8 +27,8 @@ public class DamageAddition : MonoBehaviour
         //TODO add something for player death. Will work on that after a small break
     }
 
-    public void dealDamage(){
-        currentHP = startingHP-damageToTarget;  
+    public void dealDamage(float damageAmount){
+        currentHP -= damageAmount; 
     }
     public void resetHealth(){
         currentHP = startingHP;

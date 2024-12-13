@@ -51,11 +51,11 @@ public class RayGun : MonoBehaviour
             if (hit.collider.tag == "Monster") {
                 hit.collider.enabled = false;
                 UnderwaterCreature monster = hit.collider.GetComponent<UnderwaterCreature>();
-                monster.Damage();
+                bool killed = monster.Damage();
 
                 // remove monsters from monster count if they have been destroyed
                 // We can use this value to check success condition of the room
-                if (monster == null) {
+                if (killed) {
                     if (totalMonstersRemainingFloor1 > 0) {
                         totalMonstersRemainingFloor1 --;
                         if (totalMonstersRemainingFloor1 == 0) {

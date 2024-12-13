@@ -14,6 +14,7 @@ public class CodePanel : MonoBehaviour
     private int[] incorrectCode = {0,0,0,0};
     private int[] correctCode = {0,0,0,0};
     public bool floor1 = true;
+    public DamageAddition health;
 
     void Start()
     {
@@ -62,13 +63,16 @@ public class CodePanel : MonoBehaviour
                 return true;
             }
             if (!floor1 && currentCode[i] != correctCode[i]) {
-                // DamageAddition(1);
+                health.dealDamage(1.0f);
                 return false;
             }
         }
         if (!floor1) {
             return true;
         }
+
+        Debug.Log("Incorrect code on floor 1");
+        health.dealDamage(10.0f);
         return false;
     }
 }
