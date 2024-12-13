@@ -12,7 +12,7 @@ public class CodePanel : MonoBehaviour
     public GameObject keyPrefab; 
     private int[] currentCode = new int[4];
     private int[] incorrectCode = {0,0,0,0};
-    private int[] correctCode = {0,0,0,0};
+    private int[] correctCode = {7,6,1,6};
     public bool floor1 = true;
     public DamageAddition health;
 
@@ -58,21 +58,14 @@ public class CodePanel : MonoBehaviour
     {
         for (int i = 0; i < currentCode.Length; i++)
         {
-            if (floor1 && currentCode[i] != incorrectCode[i])
+            if (currentCode[i] != correctCode[i])
             {
-                return true;
-            }
-            if (!floor1 && currentCode[i] != correctCode[i]) {
-                health.dealDamage(1.0f);
+                health.dealDamage(2.0f);
                 return false;
             }
         }
-        if (!floor1) {
-            return true;
-        }
+        return true;
 
-        Debug.Log("Incorrect code on floor 1");
-        health.dealDamage(10.0f);
-        return false;
+
     }
 }

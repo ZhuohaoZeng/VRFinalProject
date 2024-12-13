@@ -28,8 +28,7 @@ public class MonsterSpawnerTutorial : MonoBehaviour
         for (int i = 0; i < totalMonstersRemaining; i++) {
             if (monsters[i] != null) {
                 float distance = monsters[i].GetDistance();
-
-                if (distance <= 3.0) {
+                if (distance <= 5.0) {
                     monsters[i].frameLag --;
                     if (monsters[i].frameLag <= 0) {
                         monsters[i].PlayAudio();

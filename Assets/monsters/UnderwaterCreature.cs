@@ -8,7 +8,7 @@ public class UnderwaterCreature : MonoBehaviour
     public Animator animator;
     public int hp = 3;
     public NavMeshAgent agent;
-    public float speed = 3.0f;
+    public float speed = 5.0f;
     public int frameLag = 0;
     [SerializeField] private AudioClip damageSoundClip;
     private AudioSource audio;
@@ -24,7 +24,7 @@ public class UnderwaterCreature : MonoBehaviour
     }
 
     public bool Damage() {
-        hp --;
+        hp -= 1;
         if (hp == 0) {
             Kill();
             return true;

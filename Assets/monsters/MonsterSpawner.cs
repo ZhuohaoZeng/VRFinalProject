@@ -19,7 +19,7 @@ public class MonsterSpawner : MonoBehaviour
         }
     }
 
-    void SpawnMonsters() {
+    public void SpawnMonsters() {
         monsters = new UnderwaterCreature[totalMonstersRemaining];
         for (int i = 0; i < totalMonstersRemaining; i++) {
             Vector3 pos = new Vector3(Random.value * 10.0f, 0.0f, Random.value*25.0f);
@@ -34,7 +34,7 @@ public class MonsterSpawner : MonoBehaviour
             if (monsters[i] != null) {
                 float distance = monsters[i].GetDistance();
 
-                if (distance <= 1.0) {
+                if (distance <= 6.0) {
                     monsters[i].frameLag --;
                     if (monsters[i].frameLag <= 0) {
                         monsters[i].PlayAudio();

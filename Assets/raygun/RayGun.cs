@@ -18,7 +18,7 @@ public class RayGun : MonoBehaviour
     // public Player playerScript;
     public CodePanel codePanel;
     public int totalMonstersRemainingFloor1 = 5;
-    public int totalMonstersRemainingFloor2 = 10;
+    public int totalMonstersRemainingFloor2 = 1;
 
     //zz GameObject to get gate in different.
     public GameObject gateFLoor1;
@@ -26,12 +26,11 @@ public class RayGun : MonoBehaviour
     public GameObject gateFLoor3;
 
     private bool codePanelFloor1Satisfied = false;
-    private bool codePanelFloor2Satisfied = false;
     private bool finalBossIsDead = false;
 
     private bool onFloor1 = true;
-    // public MonsterSpawner monsterSpawner;
-    // public MonsterSpawnerTutorial monsterSpawnerTutorial;
+    public MonsterSpawner floor2Spawner;
+    public FinalBossSpawner bossSpawner;
     private float timer = 0f;
     // Update is called once per frame
 
@@ -56,21 +55,20 @@ public class RayGun : MonoBehaviour
             CodePanel panel = hit.transform.GetComponentInParent<CodePanel>();
             
             if (hit.collider.tag == "Monster") {
-                hit.collider.enabled = false;
                 UnderwaterCreature monster = hit.collider.GetComponent<UnderwaterCreature>();
                 bool killed = monster.Damage();
+                Debug.Log("Monster damaged");
 
                 // remove monsters from monster count if they have been destroyed
                 // We can use this value to check success condition of the room
                 if (killed) {
+                    hit.collider.enabled = false;
                     if (totalMonstersRemainingFloor1 > 0) {
                         totalMonstersRemainingFloor1 --;
-                        if (totalMonstersRemainingFloor1 == 0) {
-                            Debug.Log("Monsters killed successfully");
-                        }
-                    } else if (totalMonstersRemainingFloor2 == 0) {
+                    } else if (totalMonstersRemainingFloor2 <= 0) {
                         finalBossIsDead = true;
                     } else {
+                        Debug.Log("Killed floor2 monster");
                         totalMonstersRemainingFloor2 --;
                     }
                 }
@@ -78,9 +76,6 @@ public class RayGun : MonoBehaviour
                 bool result = codePanel.HandleSquareHit(hit.transform.gameObject);
                 if (onFloor1) {
                     codePanelFloor1Satisfied = result;
-                } else {
-                    codePanelFloor2Satisfied = result;
-
                 }
                 
             } else if(hit.collider.tag == "UpButton" || hit.collider.tag == "DownButton"){
@@ -90,6 +85,14 @@ public class RayGun : MonoBehaviour
                 Debug.Log("teleporting.");
                 ScriptTeleport teleporter = hit.collider.GetComponent<ScriptTeleport>();
                 teleporter.teleportTo(Camera.main.transform);
+                if (onFloor1) {
+                    onFloor1 = false;
+                    floor2Spawner.SpawnMonsters();
+                } else if (!finalBossIsDead) {
+                    bossSpawner.SpawnMonsters();
+                } else {
+                    gateFLoor3.SetActive(true);
+                }
             }
             else {
                 GameObject rayImpact = Instantiate(rayImpactPrefab, hit.point, Quaternion.LookRotation(-hit.normal));
@@ -100,7 +103,7 @@ public class RayGun : MonoBehaviour
                 // enable gate to floor 2
                 gateFLoor1.SetActive(true);
             }
-            if (!onFloor1 && codePanelFloor1Satisfied && totalMonstersRemainingFloor2 == 0) {
+            if (!onFloor1 && totalMonstersRemainingFloor2 == 0) {
                 // enable gate to floor 3
                 gateFLoor2.SetActive(true);
             }
