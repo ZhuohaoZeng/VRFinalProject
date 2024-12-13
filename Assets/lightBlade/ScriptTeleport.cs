@@ -14,6 +14,8 @@ public class ScriptTeleport : MonoBehaviour
     }
     public void teleportTo(Transform camera)
     {
+        DamageAddition health = GetComponent<DamageAddition>();
+        health.resetHealth();
         mainCameraTrans.position = targetLocation;
     }
 

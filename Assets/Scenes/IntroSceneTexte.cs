@@ -17,6 +17,29 @@ public class IntroSceneText : MonoBehaviour
 
     IEnumerator introText(){
         TextMeshProUGUI endingText = GetComponent<TextMeshProUGUI>();
+        endingText.text ="Hold any button for the next 4 seconds to skip the tutorial.".ToString();
+        yield return new WaitForSecondsRealtime(5);
+        if(!OVRInput.Get(OVRInput.Button.Any)){
+            endingText.text ="To shoot press the trigger on the right hand.".ToString();
+            yield return new WaitForSecondsRealtime(4);
+            endingText.text ="You will interact with all puzzles and monsters using the laser gun ".ToString();
+            yield return new WaitForSecondsRealtime(4);
+            endingText.text ="The game has 3 floors each floors has a teleporter that will open when all monsters are killed.".ToString();
+            yield return new WaitForSecondsRealtime(4);            
+            endingText.text ="You can move by teleporting to different places by moving the any stick forward and letting go.".ToString();
+            yield return new WaitForSecondsRealtime(4);            
+            endingText.text ="The red bar shows your health and your health will reset for each floor ".ToString();
+            yield return new WaitForSecondsRealtime(4);            
+            endingText.text ="The blue bar is your oxygen which will continuously deplete, if you aren't able to finish before it runs out you lose the game.".ToString();
+            yield return new WaitForSecondsRealtime(4);            
+            endingText.text ="Good Luck And Have Fun!".ToString();
+            yield return new WaitForSecondsRealtime(2);            
+        }
+        else{
+            endingText.text = "Skipping Tutorial".ToString();
+            yield return new WaitForSecondsRealtime(3);
+        }
+        
         endingText.text ="Welcome to the open ocean".ToString();
         // input2.ForceMeshUpdate(true);
         yield return new WaitForSecondsRealtime(5);

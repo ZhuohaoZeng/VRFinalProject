@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RayGun : MonoBehaviour
@@ -33,6 +35,8 @@ public class RayGun : MonoBehaviour
     // public MonsterSpawner monsterSpawner;
     // public MonsterSpawnerTutorial monsterSpawnerTutorial;
     private float timer = 0f;
+    private bool onFloor3 = false;
+
     // Update is called once per frame
 
     void Update()
@@ -88,6 +92,9 @@ public class RayGun : MonoBehaviour
                     thisButton.onClick.Invoke();
             } else if (hit.collider.tag == "teleporter") {
                 Debug.Log("teleporting.");
+                if(onFloor3){
+                    SceneManager.LoadScene("WinScene");
+                }
                 ScriptTeleport teleporter = hit.collider.GetComponent<ScriptTeleport>();
                 teleporter.teleportTo(Camera.main.transform);
             }
@@ -102,6 +109,7 @@ public class RayGun : MonoBehaviour
             }
             if (!onFloor1 && codePanelFloor1Satisfied && totalMonstersRemainingFloor2 == 0) {
                 // enable gate to floor 3
+                onFloor3 = true;
                 gateFLoor2.SetActive(true);
             }
 
