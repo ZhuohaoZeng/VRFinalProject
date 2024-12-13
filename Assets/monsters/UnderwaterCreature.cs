@@ -8,12 +8,10 @@ public class UnderwaterCreature : MonoBehaviour
     public Animator animator;
     public int hp = 3;
     public NavMeshAgent agent;
-    public float speed = 1.0f;
-    private int frameLag = 0;
-    public bool willAttack = false;
+    public float speed = 3.0f;
+    public int frameLag = 0;
     [SerializeField] private AudioClip damageSoundClip;
     private AudioSource audio;
-    public int damageAmount = 10;
 
 
     // Start is called before the first frame update
@@ -21,35 +19,39 @@ public class UnderwaterCreature : MonoBehaviour
         audio = GetComponent<AudioSource>();
     }
 
-    void Update () {
-        // pathfind and deal 10 damage every 60 frames
-        Vector3 targetPosition = Camera.main.transform.position;
-        agent.SetDestination(targetPosition);
-        agent.speed = speed;
-        float distance = Vector3.Distance(targetPosition, this.transform.position);
-        if (willAttack && distance <= 1.0) {
-            frameLag --;
-            if (frameLag <= 0) {
-                audio.clip = damageSoundClip;
-                audio.Play();
-                // dealDamage(damageAmount);
-                frameLag = 90;
-            }
-        }
-    }
-
     public void Kill() {
         animator.SetTrigger("Death");
     }
 
-    public void Damage() {
+    public bool Damage() {
         hp --;
         if (hp == 0) {
             Kill();
+            return true;
         }
+        return false;
     }
 
     public void Destroy() {
         Destroy(gameObject);
+    }
+
+    public float GetDistance() {
+        Vector3 targetPosition = GetTargetPos();
+        return Vector3.Distance(targetPosition, this.transform.position);
+    }
+
+    public void PlayAudio() {
+        audio.clip = damageSoundClip;
+        audio.Play();
+    }
+
+    public void PathFind() {
+        agent.SetDestination(GetTargetPos());
+        agent.speed = speed;
+    }
+
+    private Vector3 GetTargetPos() {
+        return Camera.main.transform.position;
     }
 }
