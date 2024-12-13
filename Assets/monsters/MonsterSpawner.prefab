@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dd26668ee116d541bc984dd44c6b944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monster: {fileID: 7002873018981177329, guid: 2829819c4148a5a4db4bbc1765541df6, type: 3}
+  monster: {fileID: 3574134720280110066, guid: 2829819c4148a5a4db4bbc1765541df6, type: 3}
   totalMonstersRemaining: 5
-  playerScript: {fileID: 0}
+  health: {fileID: 0}
+  damageAmount: 0

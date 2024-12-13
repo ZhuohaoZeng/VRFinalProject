@@ -19,6 +19,12 @@ public class RayGun : MonoBehaviour
     public CodePanel codePanel;
     public int totalMonstersRemainingFloor1 = 5;
     public int totalMonstersRemainingFloor2 = 10;
+
+    //zz GameObject to get gate in different.
+    public GameObject gateFLoor1;
+    public GameObject gateFLoor2;
+    public GameObject gateFLoor3;
+
     private bool codePanelFloor1Satisfied = false;
     private bool codePanelFloor2Satisfied = false;
     private bool finalBossIsDead = false;
@@ -26,14 +32,15 @@ public class RayGun : MonoBehaviour
     private bool onFloor1 = true;
     // public MonsterSpawner monsterSpawner;
     // public MonsterSpawnerTutorial monsterSpawnerTutorial;
-
+    private float timer = 0f;
     // Update is called once per frame
+
     void Update()
     {
         if (OVRInput.GetDown(shootingButton)) {
             Shoot();
         }
-
+        
     }
     public void Shoot() {
         source.PlayOneShot(shootingAudioClip);
@@ -80,19 +87,22 @@ public class RayGun : MonoBehaviour
                     Button thisButton = hit.collider.GetComponent<Button>();
                     thisButton.onClick.Invoke();
             } else if (hit.collider.tag == "teleporter") {
+                Debug.Log("teleporting.");
                 ScriptTeleport teleporter = hit.collider.GetComponent<ScriptTeleport>();
-                teleporter.OnCollisionEnter(Camera.main.transform);
+                teleporter.teleportTo(Camera.main.transform);
             }
             else {
                 GameObject rayImpact = Instantiate(rayImpactPrefab, hit.point, Quaternion.LookRotation(-hit.normal));
                 Destroy(rayImpact, 1);
             }
-
+            Debug.Log(onFloor1.ToString() + codePanelFloor1Satisfied.ToString() + totalMonstersRemainingFloor1.ToString());
             if (onFloor1 && codePanelFloor1Satisfied && totalMonstersRemainingFloor1 == 0) {
-                // teleport to floor 2
+                // enable gate to floor 2
+                gateFLoor1.SetActive(true);
             }
             if (!onFloor1 && codePanelFloor1Satisfied && totalMonstersRemainingFloor2 == 0) {
-                // teleport to floor 3
+                // enable gate to floor 3
+                gateFLoor2.SetActive(true);
             }
 
         } else {
