@@ -9,7 +9,7 @@ public class OxygenDeplete : MonoBehaviour
 
     float oxygenLevel = 100f;
     public Slider o2Slider;
-    public float depletionPerSecond = 1f;
+    public float depletionPerSecond = .25f;
     private int interval = 1; 
     private float nextTime = 0;
     // Start is called before the first frame update
