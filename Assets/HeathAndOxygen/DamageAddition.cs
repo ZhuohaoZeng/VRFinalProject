@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,11 +25,12 @@ public class DamageAddition : MonoBehaviour
     void Update()
     {
        healthBar.value = currentHP;
+       Debug.Log("Current HP: " + currentHP.ToString());
         //TODO add something for player death. Will work on that after a small break
     }
 
     public void dealDamage(float damageAmount){
-        currentHP -= damageAmount; 
+        currentHP = currentHP - damageAmount;
     }
     public void resetHealth(){
         currentHP = startingHP;
