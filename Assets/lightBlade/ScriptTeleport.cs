@@ -5,9 +5,10 @@ using UnityEngine;
 public class ScriptTeleport : MonoBehaviour
 {
     public Vector3 targetLocation = new Vector3(0, 0, 0);
-    private void OnCollisionEnter(Collision other)
+    public void OnCollisionEnter(Transform camera)
     {
-        other.gameObject.transform.position = targetLocation;
+        Debug.Log("Teleporting to next floor");
+        camera.position = targetLocation;
     }
 
 }

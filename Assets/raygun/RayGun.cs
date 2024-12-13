@@ -79,7 +79,10 @@ public class RayGun : MonoBehaviour
             } else if(hit.collider.tag == "UpButton" || hit.collider.tag == "DownButton"){
                     Button thisButton = hit.collider.GetComponent<Button>();
                     thisButton.onClick.Invoke();
-                }
+            } else if (hit.collider.tag == "teleporter") {
+                ScriptTeleport teleporter = hit.collider.GetComponent<ScriptTeleport>();
+                teleporter.OnCollisionEnter(Camera.main.transform);
+            }
             else {
                 GameObject rayImpact = Instantiate(rayImpactPrefab, hit.point, Quaternion.LookRotation(-hit.normal));
                 Destroy(rayImpact, 1);

@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Monster
   - panel
+  - UpButton
+  - DownButton
+  - teleporter
   layers:
   - Default
   - TransparentFX
