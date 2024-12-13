@@ -4,11 +4,18 @@ using UnityEngine;
 
 public class ScriptTeleport : MonoBehaviour
 {
-    public Vector3 targetLocation = new Vector3(0, 0, 0);
-    public void OnCollisionEnter(Transform camera)
+    public Vector3 targetLocation;// = new Vector3(0, 0, 0);
+    private Transform mainCameraTrans;
+
+    void Awake()
     {
-        Debug.Log("Teleporting to next floor");
-        camera.position = targetLocation;
+        GameObject camera = GameObject.Find("[BuildingBlock] Camera Rig");
+        mainCameraTrans = camera.transform;
     }
+    public void teleportTo(Transform camera)
+    {
+        mainCameraTrans.position = targetLocation;
+    }
+
 
 }
