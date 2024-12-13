@@ -4,16 +4,10 @@ using UnityEngine;
 
 public class ScriptTeleport : MonoBehaviour
 {
-    
-    // Start is called before the first frame update
-    void Start()
+    public Vector3 targetLocation = new Vector3(0, 0, 0);
+    private void OnCollisionEnter(Collision other)
     {
-        
+        other.gameObject.transform.position = targetLocation;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
