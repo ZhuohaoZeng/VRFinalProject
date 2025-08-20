@@ -1,7 +1,5 @@
 # Silent Sea
-Comp590 VR Final Project:Latest Code is in Branch "NeoBase"
-Game Documentation Document:
-https://docs.google.com/document/d/1UIuVxF_ez1PMEKJQ0rrjCRz7GvshZujvrPQtbCcoz38/edit?usp=sharing
+Google Docs of this document: https://docs.google.com/document/d/1UIuVxF_ez1PMEKJQ0rrjCRz7GvshZujvrPQtbCcoz38/edit?usp=sharing
 
 ## Playthrough Link with Voiceover: https://youtu.be/jKzBrDz-w9E  
 ## Executive Summary  
