@@ -19,8 +19,7 @@ User Interface
 As a result of having teleportation in the left hand, it is important to keep a tool that allows the player to view exactly where he plans to go. Fortunately, the teleportation logic provided by Meta in their building blocks has a projecting vector already configured allowing players to know exactly where they will teleport before executing that command. The concept of only having a weak laser adds to the overall sense of horror.
 Audio components were also used as an effect that added to increase the player’s feeling of immersion. Audio inputs included items like a raygun shooting sound and monster attacking sound.  
 Throughout the project, for more important features like the raygun, flashlight, monsters, and map items, we used online 3D models. Here are images of the monster and raygun models we used, which formed a core foundation of the game logic utilized in the game:  
-
-
+![Alt text](./images/assets.png)
 For game-specific items like the teleportation cube, code panel, and code panel hints, we found that generating our own objects to handle vital game logic was the best option. These objects were typically a mixture of cube-shaped game objects and textMeshes.  
 
 ## User Interface(UI) and Controls
@@ -38,6 +37,7 @@ Our game didn’t use much audio; we mainly had sound effects for monster spawni
 
 ## Assets:
 Most Assets were taken from the Unity Asset Store. One asset we created was the box that you shoot to open the teleporter was created by us but most other things within the game were taken from the Unity Asset Store.  
+![Alt text](./images/Ending.png)
 
 Scene when player wins: includes the puzzle house from A6.
 
