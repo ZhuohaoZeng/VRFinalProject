@@ -38,7 +38,6 @@ Our game didn’t use much audio; we mainly had sound effects for monster spawni
 ## Assets:
 Most Assets were taken from the Unity Asset Store. One asset we created was the box that you shoot to open the teleporter was created by us but most other things within the game were taken from the Unity Asset Store.  
 ![Alt text](images/Ending.PNG)
-Scene when player wins: includes the puzzle house from A6.
 
 
 ## Conclusion:
